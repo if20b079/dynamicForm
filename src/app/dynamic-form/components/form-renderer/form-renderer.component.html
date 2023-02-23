@@ -1,0 +1,27 @@
+<form novalidate [formGroup]="form" (ngSubmit)="submitForm(form.value)">
+
+    <h2>{{dynamicForm?.name}}</h2>
+
+    <div *ngFor="let formField of dynamicForm?.fields">
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>{{formField.label}}</mat-label>
+                <input matInput [type]="formField.fieldType" [formControlName]="formField.id">
+                <mat-hint align="start">{{formField.hint}}</mat-hint>
+                <mat-error *ngIf="form.get(formField.id)?.errors">
+                    <span *ngIf="form.hasError('required', formField.id)">{{getConstraintText(formField, 'required')}}</span>
+                    <span *ngIf="form.hasError('min', formField.id)">{{getConstraintText(formField, 'min')}}</span>
+                    <span *ngIf="form.hasError('max', formField.id)">{{getConstraintText(formField, 'max')}}</span>
+                    <span *ngIf="form.hasError('minlength', formField.id)">{{getConstraintText(formField, 'minlength')}}</span>
+                    <span *ngIf="form.hasError('maxlength', formField.id)">{{getConstraintText(formField, 'maxlength')}}</span>
+                    <span *ngIf="form.hasError('pattern', formField.id)">{{getConstraintText(formField, 'pattern')}}</span>
+                </mat-error>
+                </mat-form-field>                
+        </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="3%" class="button-row">
+        <button mat-raised-button color="warn" type="button" (click)="resetForm()" >Cancel</button>
+        <button mat-raised-button color="primary" [disabled]="form.invalid" type="submit" >Submit</button>
+    </div>
+</form>
