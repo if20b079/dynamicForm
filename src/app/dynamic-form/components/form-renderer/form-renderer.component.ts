@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ConstraintName } from '../../models/ConstraintName.type';
 import { DynamicForm } from '../../models/DynamicForm.interface';
@@ -13,6 +13,8 @@ import { FormService } from '../../services/form-service.service';
 })
 export class FormRendererComponent implements OnInit {
 
+  @Input() formId!: string;
+
   form: FormGroup;
   dynamicForm?: DynamicForm;
   
@@ -23,19 +25,23 @@ export class FormRendererComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let that = this;
-    this.formService.getDynamicForm("ff6a2f1c-1ce2-4ffc-a018-171f28c99d6b").subscribe({
-      next(val) {
-        that.dynamicForm = val;
-        that.renderForm(val);
-      },
-      error(err) {
-        console.log(err);
-      },
-      complete() {
-        console.log(that.form)
-      }
-    });
+
+    if(this.formId != null)
+    {
+      let that = this;
+      this.formService.getDynamicForm(this.formId).subscribe({
+        next(val) {
+          that.dynamicForm = val;
+          that.renderForm(val);
+        },
+        error(err) {
+          console.log(err);
+        },
+        complete() {
+          console.log(that.form)
+        }
+      });
+    }
   }
 
   renderForm(dynamicForm: DynamicForm){

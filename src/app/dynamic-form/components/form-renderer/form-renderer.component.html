@@ -1,4 +1,8 @@
-<form novalidate [formGroup]="form" (ngSubmit)="submitForm(form.value)">
+<div *ngIf="formId == null" fxFlex="100%" fxLayoutAlign="center center">
+    <p>Provided form ID not valid or not provided</p>
+</div>
+
+<form *ngIf="formId != null" novalidate [formGroup]="form" (ngSubmit)="submitForm(form.value)">
 
     <h2>{{dynamicForm?.name}}</h2>
 
