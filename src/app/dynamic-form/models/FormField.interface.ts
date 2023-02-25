@@ -6,8 +6,8 @@ export interface FormField {
     order: number,
     label: string,
     fieldType: FieldType,
-    defaultValue?: string,
-    placeholder?: string,
+    defaultValue?: string | null,
+    placeholder?: string | null,
     constraints: Array<FieldConstraint>,
-    hint?: string
+    hint?: string | null
 }

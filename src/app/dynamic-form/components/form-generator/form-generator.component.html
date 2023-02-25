@@ -1,1 +1,116 @@
-<p>form-generator works!</p>
+<div fxLayout="row wrap" fxFlex="100%">
+    <h2 fxFlex="100%">Form Generator</h2>
+
+    <form novalidate [formGroup]="form" (ngSubmit)="submitForm(form.value)" fxLayout="row wrap" fxFlex="100%">
+        <div fxLayout="row wrap" fxFlex="100%">
+            <mat-form-field appearance="fill" fxFlex="100%">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" formControlName="name">
+                <mat-error *ngIf="form.get('name')?.errors">
+                    <span *ngIf="form.hasError('required', 'name')">This field is required</span>
+                    <span *ngIf="form.hasError('maxlength', 'name')">Only less than 255 Characters are alllowed</span>
+                </mat-error>
+            </mat-form-field> 
+        </div>
+    
+        <div cdkDropList (cdkDropListDropped)="drop($event)" formArrayName="fields" fxLayout="row wrap" fxFlex="100%">
+            <div *ngFor="let field of formFieldArray().controls; let fieldIndex = index" cdkDrag fxLayout="row wrap" fxFlex="100%">
+                <div [formGroupName]="fieldIndex" class="form-field-group" fxLayout="row wrap" fxFlex="100%">
+                    <div fxLayout="row wrap" fxFlex="100%" fxLayoutAlign="space-between center" fxLayoutGap="3%">
+                        <mat-form-field appearance="fill" fxFlex="30%">
+                            <mat-label>Field Type</mat-label>
+                            <mat-select formControlName="fieldType">
+                              <mat-option value="text">Text</mat-option>
+                              <mat-option value="number">Number</mat-option>
+                              <mat-option value="email">Email</mat-option>
+                              <mat-option value="date">Date</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="form.get('fieldType')?.errors">
+                                <span *ngIf="form.hasError('required', 'fieldType')">Please select one option</span>
+                            </mat-error>
+                        </mat-form-field>
+                
+                        <mat-form-field appearance="fill" fxFlex="30%">
+                            <mat-label>Label</mat-label>
+                            <input matInput type="text" formControlName="label">
+                            <mat-error *ngIf="form.get('label')?.errors">
+                                <span *ngIf="form.hasError('required', 'label')">This field is required</span>
+                                <span *ngIf="form.hasError('maxlength', 'label')">Only less than 100 Characters are alllowed</span>
+                            </mat-error>
+                        </mat-form-field>   
+                
+                        <mat-form-field appearance="fill" fxFlex="30%">
+                            <mat-label>Default Value</mat-label>
+                            <input matInput type="text" formControlName="defaultValue">
+                        </mat-form-field>  
+                    </div>
+            
+                    <div fxLayout="row wrap" fxFlex="100%" fxLayoutAlign="space-between center" fxLayoutGap="3%">
+                        <mat-form-field appearance="fill" fxFlex="45%">
+                            <mat-label>Placeholder</mat-label>
+                            <input matInput type="text" formControlName="placeholder">
+                        </mat-form-field>   
+                
+                        <mat-form-field appearance="fill" fxFlex="45%">
+                            <mat-label>Hint</mat-label>
+                            <input matInput type="text" formControlName="hint">
+                        </mat-form-field>  
+                    </div>
+            
+                    <div fxLayout="row wrap" fxFlex="100%" class="constraint-group">
+                        <h3 fxFlex="100%">Constraints</h3>
+                        <div formArrayName="constraints" fxLayout="row wrap" fxFlex="100%">
+                            
+                            <div *ngFor="let constraint of fieldConstraintArray(fieldIndex).controls; let constraintIndex = index" fxLayout="row wrap" fxFlex="100%">
+            
+                                <div [formGroupName]="constraintIndex" fxFlex="100%" fxLayout="row wrap" fxLayoutGap="3%">
+                                    <mat-form-field appearance="fill" fxFlex="15%">
+                                        <mat-label>Constraint Type</mat-label>
+                                        <mat-select formControlName="name" (selectionChange)="disableRequiredValue(fieldIndex, constraintIndex)" >
+                                          <mat-option *ngFor="let option of getConstraintOptions(fieldIndex)" [value]="option.value">{{option.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+            
+                                    <mat-form-field appearance="fill" fxFlex="35%">
+                                        <mat-label>Constraint Value</mat-label>
+                                        <input matInput type="text" formControlName="value">
+                                    </mat-form-field>
+            
+                                    <mat-form-field appearance="fill" fxFlex="35%">
+                                        <mat-label>Hint</mat-label>
+                                        <input matInput type="text" formControlName="hint">
+                                    </mat-form-field>
+            
+                                    <button type="button" mat-fab color="warn" (click)="removeFieldConstraint(fieldIndex, constraintIndex)" ><mat-icon>do_not_disturb_on</mat-icon></button>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100%" class="button-row">
+                            <button type="button" mat-fab extended color="primary" (click)="addFieldConstraint(fieldIndex)" [disabled]="addConstraintDisabled(fieldIndex)"><mat-icon>add_circle</mat-icon>Add Constraint</button>
+                        </div>
+                    </div>
+    
+                    <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100%" class="button-row">
+                        <button type="button" mat-fab extended color="warn" (click)="removeField(fieldIndex)"><mat-icon>do_not_disturb_on</mat-icon>Remove Form Field</button>
+                    </div>
+                    
+                </div>
+
+                <div class="drag-drop-placeholder" *cdkDragPlaceholder></div>
+            </div>
+        </div>
+    
+        
+    
+        <div fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="100%" class="add-form-field-div">
+            <button type="button" mat-fab extended color="primary" (click)="addField()"><mat-icon>add_circle</mat-icon>Add Form Field</button>
+        </div>
+        
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="3%" class="button-row">
+            <button mat-raised-button color="warn" type="button" (click)="resetForm()" >Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="form.invalid" type="submit" >Submit</button>
+        </div>
+    
+    </form>
+</div>

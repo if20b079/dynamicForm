@@ -1,3 +1,22 @@
 <div class="form-container">
-    <app-form-renderer [formId]="'ff6a2f1c-1ce2-4ffc-a018-171f28c99d6b'"></app-form-renderer>
+    <mat-tab-group>
+        <mat-tab label="Generator">
+            <app-form-generator></app-form-generator>
+        </mat-tab>
+
+        <mat-tab label="Renderer">
+
+            <div>
+                <mat-form-field appearance="fill" fxFlex="35%">
+                    <mat-label>FormID</mat-label>
+                    <input matInput type="text" name="formId" [(ngModel)]="formId">
+                </mat-form-field>
+
+                <button type="button" mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+            </div>
+            
+
+            <app-form-renderer [formId]="formId"></app-form-renderer>
+        </mat-tab>
+      </mat-tab-group>
 </div>

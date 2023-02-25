@@ -1,0 +1,30 @@
+form {
+    padding: 1rem;
+    border: 3px solid rgb(0, 0, 0);
+}
+
+.form-field-group {
+    margin-top: 0.2rem;
+    padding: 1rem;
+    border: 2px solid rgb(107, 107, 107);
+}
+
+.constraint-group {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgb(190, 190, 190);
+}
+
+.add-form-field-div {
+    padding: 1rem 0;
+}
+
+.button-row {
+    margin-top: 2rem;
+}
+
+.drag-drop-placeholder {
+    background: rgb(211, 211, 211);
+    border: dotted 3px rgb(136, 136, 136);
+    min-height: 300px;
+    width: 100%;
+}
