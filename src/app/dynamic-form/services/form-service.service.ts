@@ -192,6 +192,7 @@ export class FormService {
 
   saveDynamicForm(form: DynamicForm)
   {
-    console.log(form);
+    exampleForms.push(form)
+    console.log(form.id);
   }
 }
