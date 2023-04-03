@@ -18,8 +18,8 @@ type ConstraintSelectOption = {value: ConstraintName, name: string, validFor: Ar
 export class FormGeneratorComponent {
 
   constraintOptions : Array<ConstraintSelectOption> = [
-    {value: "max", validFor: ["date", "number"], name: "Minimum"},
-    {value: "min", validFor: ["date", "number"], name: "Maximum"},
+    {value: "min", validFor: ["date", "number"], name: "Minimum"},
+    {value: "max", validFor: ["date", "number"], name: "Maximum"},
     {value: "maxlength", validFor: ["email", "text"], name: "Max Length"},
     {value: "minlength", validFor: ["email", "text"], name: "Min Length"},
     {value: "pattern", validFor: ["email", "text"], name: "Pattern"},
